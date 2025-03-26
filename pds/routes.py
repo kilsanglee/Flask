@@ -105,72 +105,58 @@ def board_update():
   connection.close()
   return redirect(url_for('pds_bp.pds_list'))
 
-@pds_bp.route('/pds_save', methods=['post'])
+@pds_bp.route("/pds_save", methods=['post'])
 def pds_save():
-      from datetime import datetime
-      file = request.files['file']
+    from datetime import datetime
+    file_dir = 'static/pds/files/'
+    file = request.files['file']
+    file_path = os.path.join(file_dir, file.filename)
+    filename = ""
+    if  os.path.exists(file_path):
+        name, ext = os.path.splitext(file.filename)
+        timestr = datetime.now().strftime("%H%M%S")
+        filename = f"{name}_{timestr}{ext}"
+        file_path = os.path.join(file_dir, filename)
+        file.save(file_path)
+    else :
+       filename = file.filename
+       file.save(file_path)
 
-      file_path = os.path.join(file_dir, file.filename)
-      filename = ""
-     # 파일을 먼저 처리 해야 합니다.
-      if os.path.exists(file_path):
-          name, ext = os.path.splitext(file.filename)
-          timestr = datetime.now().strftime("%H%M%S")
-          filename = f"{name}_{timestr}{ext}"
-          print("==> filename:",filename)
-          file_path = os.path.join(file_dir, filename)
-          file.save(file_path)
-      else:
-          file_name = file.filename
-          file.save(file_path)
-
-      sname = request.form['sname']
-      title = request.form['title']
-      content = request.form['content']
-      connection = get_db_connection()
-      cursor = connection.cursor()
-      cursor.execute(
+    sname = request.form['sname']
+    title = request.form['title']
+    content = request.form['content']
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute(
           '''
              insert into pds(idx, sname, title, content,files,cnt)
-             values(idx_pds.nextval, :1, :2,:3,:4, 0)
-          ''',(sname, title,content,filename)
-      )
-      
-      connection.commit()
-      cursor.close()
-      connection.close()
+             values(idx_pds.nextval, :1, :2 , :3, :4 , 0)
+          ''',(sname, title,content, filename)
+    )
+    connection.commit()
+    cursor.close()
+    connection.close()
+    # url_for('board_bp.board_list') 는 함수 이름을 찾는다.
 
-      return redirect(url_for('pds_bp.pds_list'))
+    return redirect(url_for('pds_bp.pds_list'))
 
-
-@pds_bp.route('/pds_form')
+@pds_bp.route("/pds_form")
 def pds_form():
     return render_template('pds/form.html')
 
 
-@pds_bp.route('/pds_list')
-def pds_list():
-
+@pds_bp.route("/pds_list")
+def  pds_list():
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("select idx, sname, title, content, files, cnt  "
-                   " from  pds  "
-                   " order  by  idx  desc")
+    cursor.execute(""" select idx, sname, title, content, files, cnt  
+                    from  pds 
+                    order  by  idx  desc """)
 
+    # 튜플값을 딕셔너리로 변경해서 컬럼이름을 사용할 수 있도록 도와준다.
     column_names = [desc[0].lower() for desc in cursor.description]
-
-    '''
-    column_names = []
-    for desc in cursor.description:
-        column_names.append(desc[0].lower())
-    '''
-
     rows = [dict(zip(column_names, row)) for row in cursor.fetchall()]
-    '''
-    rows = []
-    for row in cursor.fetchall():
-        rows.append(dict(zip(column_names, row)))
-    '''
+
     cursor.close()
     connection.close()
     return render_template('pds/list.html', rows=rows)
