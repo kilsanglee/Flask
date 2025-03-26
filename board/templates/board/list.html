@@ -1,0 +1,58 @@
+{% include  'top.html' %}
+<section>
+<br><br>
+<div align="center" >
+ <h2> 게시판 목록 보기 </h2>
+ <h4> 전체레코드수:{{total_count}}  전체Page:{{ total_page  }}  현재Page:{{ now_page }} </h4>
+<table border="1" align="center" width="500">
+<tr><td align="center">번호 </td><td align="center">이름 </td><td align="center">제목 </td><td align="center">조회수(d) </td></tr>
+
+  {% for  row  in rows %}
+  <tr>
+    <td align="center" > {{ row['idx'] }}  </td>
+    <td align="center" >
+      <a href="{{ url_for('board_bp.board_edit',idx=row['idx'],ch1=request.args.get('ch1'),ch2=request.args.get('ch2')) }} ">
+      {{ row['sname'] }}
+      </a>
+    </td>
+    <td> {{ row['title'] }} </td>
+    <td  align="center" >
+       <a href="{{ url_for('board_bp.board_delete',idx=row['idx'],ch1=request.args.get('ch1'),ch2=request.args.get('ch2')) }} ">
+      {{ row['cnt'] }}
+      </a>
+    </td>
+  </tr>
+  {% endfor %}
+
+</table>
+<A HREF="/board/board_form" > 글쓰기 </A> <br>
+<a href = "{{ url_for('board_bp.board_list',start_idx=1,ch1=request.args.get('ch1'),ch2=request.args.get('ch2')) }}"> 처음으로 </a> &emsp;
+
+  {% if start_idx > 9 %}
+     <a href = "{{ url_for('board_bp.board_list',start_idx=start_idx-10,ch1=request.args.get('ch1'),ch2=request.args.get('ch2')) }}"> 이전 </a> &emsp;
+  {% else %}
+     <a > 이전 </a> &emsp;
+  {%endif%}
+
+  {% if total_page > now_page %}
+     <a href = "{{ url_for('board_bp.board_list',start_idx=start_idx+page_size,ch1=request.args.get('ch1'),ch2=request.args.get('ch2')) }}"> 다음 </a> &emsp;
+
+  {% else %}
+     <a > 다음 </a> &emsp;
+  {%endif%}
+
+  <a href = "{{ url_for('board_bp.board_list',start_idx=(total_page - 1) * page_size + 1,ch1=request.args.get('ch1'),ch2=request.args.get('ch2')) }}"> 마지막으로 </a>
+
+<form action="/board/board_list">
+    <select name="ch1">
+        <option value="sname"> 이름 </option>
+        <option value="title"> 제목 </option>
+    </select>
+    <input type="text" name="ch2">
+    <input type="submit" value="검색하기">
+</form>
+
+</div>
+<br>
+</section>
+{% include  'bottom.html' %}

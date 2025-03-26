@@ -1,0 +1,26 @@
+{% include  'top.html' %}
+<section>
+<br><br>
+<div  align="center">
+<h2> 상세보기/수정하기 </h2>
+<form action="board_update" method="post">
+<input type="hidden" name="idx" value="{{ row['idx'] }}" >
+<table  border="1" >
+<tr><td>이름</td><td> <input type="text" name="sname" value="{{ row['sname'] }}" > </td></tr>
+<tr><td>제목</td><td> <input type="text" name="title"  value="{{ row['title'] }}"> </td></tr>
+<tr><td>내용</td>
+<td> <textarea cols="60" rows="5" name="content" >{{ row['content'] }}</textarea> </td>
+</tr>
+<tr><td>조회수</td><td> <input type="text" name="cnt" value="{{ row['cnt'] }}" readonly > </td></tr>
+    <tr><td colspan="2" align="center" >
+    <input type="submit" value="수정하기" >
+    </td></tr>
+</table>
+</form>
+<A HREF="/board/board_form" > 글쓰기 </A> &emsp;&emsp;
+<A HREF="/board/board_list" > 목록보기 </A> &emsp;&emsp;
+<A HREF="/board/board_delete?idx={{ row['idx'] }}" > 삭제하기 </A>
+</div>
+<br>
+</section>
+{% include  'bottom.html' %}

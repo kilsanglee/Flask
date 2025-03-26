@@ -1,0 +1,22 @@
+{% include  'top.html' %}
+<section>
+<br><br>
+<div  align="center">
+<h2> 글 쓰 기 </h2>
+<form action="pds_save" method="post" enctype="multipart/form-data">
+<table  border="1" >
+<tr><td>이름</td><td> <input type="text" name="sname" required> </td></tr>
+<tr><td>제목</td><td> <input type="text" name="title" required> </td></tr>
+
+<tr><td>내용</td><td> <textarea cols="60" rows="5" name="content" ></textarea> </td></tr>
+<tr><td>파일첨부</td><td> <input type="file" name="file" required> </td></tr>
+<tr><td colspan="2" align="center" >
+    <input type="submit" value="저장하기" >
+    </td></tr>
+</table>
+</form>
+<A HREF="/pds/pds_list" > 목록보기 </A>
+</div>
+<br>
+</section>
+{% include  'bottom.html' %}

@@ -1,0 +1,55 @@
+@charset "UTF-8";
+
+header, nav, section, footer {
+    width: 70%; /* 너비를 70%로 지정 */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+header{
+ background:#0000ff; /* 배경색깔 */
+ height:90px; /* 영역의 높이 */
+ line-height:90px; /* 라인높이  */
+ color:#ffffff;   /* 흰색 글자 */
+ font-size:30px;  /* 글자 사이즈 */
+ text-align:center; /* 글자 정렬 */
+}
+nav{
+ background:#0088ff;
+ height:35px;
+ line-height:35px;
+ color:#ffffff;
+ font-size:14px;
+ text-align:left;
+}
+
+section{
+ background:#eaeaea;
+ min-height:700px;
+ line-height:35px;
+ font-size:14px;
+
+}
+
+footer{
+ background:#0000ff;
+ height:40px;
+ line-height:40px;
+ color:#ffffff;
+ font-size:14px;
+ text-align:center;
+}
+
+nav a{
+  text-decoration:none;
+  color:#ffffff;
+}
+
+/* 테이블 테두리를 검정색으로 지정 */
+.table-bordered {
+    border: 2px solid black !important; /* 테이블 전체 테두리를 3px 두께로 설정 */
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid black !important; /* 셀 테두리를 2px 두께로 설정 */
+}
